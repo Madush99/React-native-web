@@ -8,7 +8,7 @@ import {
   DeepLinking,
 } from 'react-native-web-router';
 import logo from './logo.png';
-import Books from './Screens/books';
+import Movies from './Screens/movies';
 import MoviesApp from './Screens/moviesApp';
 
 // const isNative = Platform.OS !== 'web';
@@ -38,7 +38,7 @@ const App = () => {
       <BackButton>
         <Switch>
           <Route path={'/'} exact component={MoviesApp} />
-          <Route path={'/books'} component={Books} />
+          <Route path={'/movies'} component={Movies} />
           {/* <Route path={'/screen3'} component={Screen3} />
           <Redirect to={'/'} /> */}
         </Switch>
