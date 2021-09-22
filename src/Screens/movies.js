@@ -2,12 +2,10 @@
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import axios from 'axios';
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 
-
-const imgrc = 'https://static01.nyt.com/images/2021/09/16/arts/16balanchine1/16balanchine1-mediumThreeByTwo440.jpg';
 
 const Movies = () => {
 
@@ -25,54 +23,41 @@ const Movies = () => {
       }, []);
 
       return (
+            <ScrollView>
 
-            <View style={{ alignItems: 'center' }}>
+                  <View style={{ alignItems: 'center' }}>
+                        <Text style={{ fontFamily: 'Cochin', fontWeight: 'bold', fontSize: '50px', paddingBottom: '40px', paddingTop: '20px' }}>New York Times Movies Reviews</Text>
+                        {movies.map((movie) => {
+                              const {
+                                    display_title,
+                                    headline,
+                                    mpaa_rating,
+                                    critics_pick,
+                                    byline,
+                                    multimedia,
+                                    link,
+                                    summary_short
+                              } = movie;
 
-                  {movies.map((movie) => {
-                        const {
-                              display_title,
-                              headline,
-                              mpaa_rating,
-                              critics_pick,
-                              byline,
-                              multimedia,
-                              link,
-                              summary_short
-                        } = movie;
+                              return (
+                                    <>
+                                          <Card style={{ width: 800, height: 800 }}>
+                                                <Card.Title title={headline} subtitle={display_title} />
+                                                {/* <Card.Cover source={{ uri: multimedia.src }} style={{ width: 800, height: 600 }} /> */}
+                                                <Card.Content>
+                                                      <Card.Cover source={{ uri: multimedia.src }} style={{ width: 800, height: 600 }} />
+                                                      <Title>{display_title}</Title>
+                                                      <Paragraph>{summary_short}</Paragraph>
+                                                </Card.Content>
+                                          </Card>
 
-                        return (
-                              <>
-                                    {/* 
-                                          <Text key={critics_pick}></Text>
-                                          <Text></Text>
-                                          <Text>{headline}</Text>
-                                          <Text>{mpaa_rating}</Text>
-                                          <Text>{byline}</Text>
-                                          {/* <Text>{link}</Text> */}
-                                    {/* <Text></Text>
-                                          <View>
-                                                <Image source={{ uri: multimedia.src }}
-                                                      style={{ width: 400, height: 400 }} />
-                                          </View> */}
-                                    <Card style={{ width: 800, height: 800 }}>
-                                          <Card.Title title={headline} subtitle={display_title} />
-                                          {/* <Card.Cover source={{ uri: multimedia.src }} style={{ width: 800, height: 600 }} /> */}
-                                          <Card.Content>
-                                                <Card.Cover source={{ uri: multimedia.src }} style={{ width: 800, height: 600 }} />
-                                                <Title>{display_title}</Title>
-                                                <Paragraph>{summary_short}</Paragraph>
-                                          </Card.Content>
+                                    </>
+                              );
+                        })}
 
-                                          <br></br>
-                                    </Card>
+                  </View >
 
-                              </>
-                        );
-                  })}
-
-            </View >
-
-
+            </ScrollView>
       );
 };
 
