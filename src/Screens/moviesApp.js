@@ -31,32 +31,3 @@ export default class MoviesApp extends React.Component {
             );
       }
 }
-
-const styles = StyleSheet.create({
-      container: {
-            flex: 1,
-            justifyContent: 'space-between',
-      },
-      row: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-      },
-      cornerMark: {
-            backgroundColor: '#000',
-            color: '#fff',
-      },
-      contentContainer: {
-            maxWidth: 270,
-            alignItems: 'center',
-      },
-      content: {
-            textAlign: 'center',
-      },
-      link: {
-            marginVertical: 20,
-            padding: 10,
-            backgroundColor: '#393',
-            color: '#fff',
-      },
-});
