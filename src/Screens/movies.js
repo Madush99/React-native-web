@@ -5,30 +5,76 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, Button, ScrollView, FlatList } from 'react-native';
 import axios from 'axios';
 import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
+import { TextInput } from 'react-native-web';
 
 
-const Movies = () => {
+const Movies = ({ searchText }) => {
 
       const [movies, setMovies] = useState([]);
+      const [term, setTerm] = useState('all');
+
+      const [search, setSearch] = useState('all');
+      const [filteredDataSource, setFilteredDataSource] = useState([]);
+      const [masterDataSource, setMasterDataSource] = useState([]);
 
       useEffect(() => {
             const fetchMovies = async () => {
-                  const res = await axios.get('https://api.nytimes.com/svc/movies/v2/reviews/all.json?api-key=F493stB50gvFVeedyFlTKBA9UzA7odGY');
+                  const res = await axios.get(`https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=${search}&api-key=F493stB50gvFVeedyFlTKBA9UzA7odGY`);
                   setMovies(res.data.results);
                   console.log(res.data.results);
 
             };
 
             fetchMovies();
-      }, []);
+      }, [search]);
+
+
+      const searchFilterFunction = (text) => {
+            // Check if searched text is not blank
+            if (text) {
+                  // Inserted text is not blank
+                  // Filter the masterDataSource
+                  // Update FilteredDataSource
+                  const newData = masterDataSource.filter(
+                        function (item) {
+                              const itemData = item.title
+                                    ? item.title.toUpperCase()
+                                    : ''.toUpperCase();
+                              const textData = text.toUpperCase();
+                              return itemData.indexOf(textData) > -1;
+                        });
+                  setFilteredDataSource(newData);
+                  setSearch(text);
+            } else {
+                  // Inserted text is blank
+                  // Update FilteredDataSource with masterDataSource
+                  setFilteredDataSource(masterDataSource);
+                  setSearch(text);
+            }
+      };
+
+
+
+
+      //https://api.nytimes.com/svc/movies/v2/reviews/search.json?query={term}&api-key=F493stB50gvFVeedyFlTKBA9UzA7odGY
+      //https://api.nytimes.com/svc/movies/v2/reviews/all.json?api-key=F493stB50gvFVeedyFlTKBA9UzA7odGY
 
       return (
             <ScrollView>
 
                   <View >
                         <Text style={{ fontFamily: 'Cochin', fontWeight: 'bold', fontSize: '50px', paddingBottom: '20px', paddingTop: '20px', alignSelf: 'center' }}>New York Times Movies Reviews</Text>
-                        <Image source={{ uri: 'https://wallpapercave.com/wp/wp3285541.jpg' }} style={{ width: 1550, height: 500, paddingBottom: '40px' }} />
-                        <Text style={{ paddingTop: '20px', color: '#000000', fontWeight: 'bold', fontSize: '20px', fontFamily: 'Cochin', paddingLeft: '60px' }}>Movies</Text>
+                        <Image source={{ uri: 'https://wallpapercave.com/wp/wp3285541.jpg' }} style={[styles.imgCon]} />
+
+                        {/* <TextInput
+                              style={styles.textInputStyle}
+                              onChangeText={(text) => searchFilterFunction(text)}
+                              value={search}
+                              underlineColorAndroid="transparent"
+                              placeholder="Search Here"
+                        /> */}
+
+                        <Text style={{ paddingTop: '30px', color: '#000000', fontWeight: 'bold', fontSize: '20px', fontFamily: 'Cochin', paddingLeft: '60px' }}>Movies</Text>
                         <Text style={{ paddingTop: '20px', color: '#000000', fontWeight: 'bold', fontSize: '40px', fontFamily: 'Cochin', paddingLeft: '60px' }}>Movie Reviews</Text>
                         <Text style={{ paddingTop: '5px', color: '#3C3C3C', fontSize: '15px', fontFamily: 'Cochin', paddingLeft: '60px' }}>Our film critics on blockbusters, independents and everything in between.</Text>
                         <Text style={{
@@ -55,8 +101,13 @@ const Movies = () => {
 
                               return (
                                     <>
+                                          <movies key={display_title} />
+
 
                                           <Card style={[styles.container]}>
+
+
+
                                                 <Card.Title title={display_title} subtitle={headline} style={{ marginLeft: '40px' }} />
                                                 <Text style={{ marginLeft: '60px', paddingBottom: '20px' }}>Publication Date: {publication_date}</Text>
                                                 <Card.Content style={[styles.content]}>
@@ -110,9 +161,34 @@ const styles = StyleSheet.create({
             marginLeft: '40px',
             marginRight: '40px'
       },
+      imgCon: {
+            width: 1550,
+            height: 500,
+            paddingBottom: '40px'
+      },
+      showcase: {
+            paddingTop: '20px',
+            backgroundColor: '#3C3C3C',
+            height: '150px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+
+      },
+      textInputStyle: {
+            height: 40,
+            borderWidth: 1,
+            paddingLeft: 20,
+            margin: 5,
+            borderColor: '#009688',
+            backgroundColor: '#FFFFFF',
+      },
 
 
-})
+
+
+});
 
 
 
