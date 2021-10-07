@@ -8,6 +8,8 @@ import {
   DeepLinking,
 } from 'react-native-web-router';
 import logo from './logo.png';
+// eslint-disable-next-line prettier/prettier
+import { HomePage } from './Screens/homeScreen';
 import Movies from './Screens/movies';
 import MoviesApp from './Screens/moviesApp';
 import SearchScreen from './Screens/searchScreen';
@@ -37,9 +39,9 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route path={'/'} exact component={MoviesApp} />
-        <Route path={'/movies'} component={Movies} />
-        <Route path={'/search'} component={SearchScreen} />
+        {/* <Route path={'/'} exact component={Movies} /> */}
+        {/* <Route path={'/movies'} component={} /> */}
+        <Route path={'/'} component={HomePage} />
         {/* <Route path={'/screen3'} component={Screen3} />
           <Redirect to={'/'} /> */}
       </Switch>

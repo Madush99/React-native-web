@@ -11,16 +11,26 @@ import { TextInput } from 'react-native-web';
 const Movies = ({ searchText }) => {
 
       const [movies, setMovies] = useState([]);
+      const [duplicatehotes, setduplicatehotes] = useState([]);
       const [term, setTerm] = useState('all');
 
       const [search, setSearch] = useState('all');
       const [filteredDataSource, setFilteredDataSource] = useState([]);
       const [masterDataSource, setMasterDataSource] = useState([]);
 
+
+      // const onPress = () => {
+
+      //       setSearch({
+      //             search: '',
+      //       })
+      // }
+
       useEffect(() => {
             const fetchMovies = async () => {
                   const res = await axios.get(`https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=${search}&api-key=F493stB50gvFVeedyFlTKBA9UzA7odGY`);
                   setMovies(res.data.results);
+                  setduplicatehotes(res.data.results);
                   console.log(res.data.results);
 
             };
@@ -28,30 +38,46 @@ const Movies = ({ searchText }) => {
             fetchMovies();
       }, [search]);
 
+      // function filterByType(text) {
+      //       setSearch(text);
+      //       if (text !== 'all') {
+      //             const dupdate = duplicatehotes.filter(results => results.display_title.toLowerCase().includes(text.toLowerCase()))
+      //             setMovies(dupdate)
+      //       }
+      //       else {
+      //             setMovies(duplicatehotes)
+      //       }
 
-      const searchFilterFunction = (text) => {
-            // Check if searched text is not blank
-            if (text) {
-                  // Inserted text is not blank
-                  // Filter the masterDataSource
-                  // Update FilteredDataSource
-                  const newData = masterDataSource.filter(
-                        function (item) {
-                              const itemData = item.title
-                                    ? item.title.toUpperCase()
-                                    : ''.toUpperCase();
-                              const textData = text.toUpperCase();
-                              return itemData.indexOf(textData) > -1;
-                        });
-                  setFilteredDataSource(newData);
-                  setSearch(text);
-            } else {
-                  // Inserted text is blank
-                  // Update FilteredDataSource with masterDataSource
-                  setFilteredDataSource(masterDataSource);
-                  setSearch(text);
-            }
-      };
+      // }
+
+      function filterBySearch() {
+            const dupdate = duplicatehotes.filter(results => results.display_title.toLowerCase().includes(search))
+            setMovies(dupdate)
+      }
+
+      // const searchFilterFunction = (text) => {
+      //       // Check if searched text is not blank
+      //       if (text) {
+      //             // Inserted text is not blank
+      //             // Filter the masterDataSource
+      //             // Update FilteredDataSource
+      //             const newData = masterDataSource.filter(
+      //                   function (item) {
+      //                         const itemData = item.title
+      //                               ? item.title.toUpperCase()
+      //                               : ''.toUpperCase();
+      //                         const textData = text.toUpperCase();
+      //                         return itemData.indexOf(textData) > -1;
+      //                   });
+      //             setFilteredDataSource(newData);
+      //             setSearch(text);
+      //       } else {
+      //             // Inserted text is blank
+      //             // Update FilteredDataSource with masterDataSource
+      //             setFilteredDataSource(masterDataSource);
+      //             setSearch(text);
+      //       }
+      // };
 
 
 
@@ -66,13 +92,18 @@ const Movies = ({ searchText }) => {
                         <Text style={{ fontFamily: 'Cochin', fontWeight: 'bold', fontSize: '50px', paddingBottom: '20px', paddingTop: '20px', alignSelf: 'center' }}>New York Times Movies Reviews</Text>
                         <Image source={{ uri: 'https://wallpapercave.com/wp/wp3285541.jpg' }} style={[styles.imgCon]} />
 
-                        {/* <TextInput
+                        <TextInput
                               style={styles.textInputStyle}
-                              onChangeText={(text) => searchFilterFunction(text)}
+
                               value={search}
+                              onChangeText={(text) => { setSearch(text) }}
                               underlineColorAndroid="transparent"
                               placeholder="Search Here"
-                        /> */}
+                        >
+
+
+                        </TextInput>
+                        <Button title="Search" onPress={filterBySearch} color='#161314' />
 
                         <Text style={{ paddingTop: '30px', color: '#000000', fontWeight: 'bold', fontSize: '20px', fontFamily: 'Cochin', paddingLeft: '60px' }}>Movies</Text>
                         <Text style={{ paddingTop: '20px', color: '#000000', fontWeight: 'bold', fontSize: '40px', fontFamily: 'Cochin', paddingLeft: '60px' }}>Movie Reviews</Text>
@@ -162,7 +193,7 @@ const styles = StyleSheet.create({
             marginRight: '40px'
       },
       imgCon: {
-            width: 1550,
+            width: "100%",
             height: 500,
             paddingBottom: '40px'
       },
